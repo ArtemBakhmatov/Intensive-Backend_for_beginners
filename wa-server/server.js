@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import 'colors';
 import express from "express";
 import authRoutes from './app/auth/auth.routes.js';
+import userRoutes from './app/user/user.routes.js';
 import { prisma } from './app/prisma.js';
 import { errorHandler, notFound } from './app/middleware/error.middleware.js';
 
@@ -24,6 +25,7 @@ async function main() {
 
     app.use(express.json); // в формате json
     app.use('/api/auth', authRoutes);
+    app.use('/api/users', userRoutes);
 
     app.use(notFound);
     app.use(errorHandler);
