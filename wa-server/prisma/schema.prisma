@@ -20,3 +20,28 @@ model User {
   password String
   images   String[]
 }
+
+model Workout {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name String
+  exercises Exercise[]
+}
+model Exercise {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name String
+  times Int
+  iconPath String @map("icon_path")
+ 
+  workouts Workout[]
+}
+
+// OneToOne -> когда у одного юзера есть один профиль, и не имеет к остальным юзерам никакого отношения
+// OneToMany -> когда у одного юзера имеется много постов
+// ManyToOne -> в обратную сторону (у многих постов одни юзер)
+// ManyToMany -> много ко многим
