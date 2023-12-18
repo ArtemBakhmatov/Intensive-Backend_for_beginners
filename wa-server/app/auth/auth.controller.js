@@ -1,9 +1,13 @@
+import { prisma } from "../prisma.js";
+
 // @desk Auth user
 // @route POST /api/auth/login
 // @access Public
 
 export const authUser = async (req, res) => {
-    res.json({ message: 'You are authenticated!' });
+
+    const user = await prisma.user.findMany()
+    res.json({ user });
 }
 
 // GET для получения данных

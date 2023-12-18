@@ -1,12 +1,25 @@
+import dotenv from 'dotenv';
+import morgan from 'morgan';
 import 'colors';
 import express from "express";
 import authRoutes from './app/auth/auth.routes.js';
+import { prisma } from './app/prisma.js';
+
+dotenv.config(); // инициализируем файл .env
+
+/* 
+    TODO: 
+        [] - Async error handling for method
+        [] - App.use notFound, errorHandler
+        [] - 
+*/
 
 const app = express();
 
 async function main() {
-    //if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+    if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
     // morgan -> позволяет делать логирование внутри консоли (какие запросы ушли и какие пришли)
+    // morgan -> будет логировать наши запросы
 
     app.use(express.json); // в формате json
     app.use('/api/auth', authRoutes);
@@ -16,8 +29,8 @@ async function main() {
     app.listen(
         PORT, 
         console.log(
-            `Server running in ${ process.env.NODE_ENV } mode on port ${ PORT }`.green
-            .bold
+            `Server running in ${ process.env.NODE_ENV } mode on port ${ PORT }`.blue
+                .bold
         )
     )
 }
@@ -29,4 +42,12 @@ async function main() {
     listen() ->  используется для привязки и прослушивания соединений на указанном хосте и порту. 
 */
 
-main();
+main() // отключение БД
+	.then(async () => {
+		await prisma.$disconnect()
+	})
+	.catch(async e => {
+		console.error(e)
+		await prisma.$disconnect()
+		process.exit(1)
+	})
