@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken'
 
 export const generateToken = userId =>
-	jwt.sign( // sign() -> подпись
+	jwt.sign(
 		{
-			userId // тело, что мы хотим опрокинуть
+			userId
 		},
-		process.env.JWT_SECRET, // ключ шифрования
-		{ 
-			expiresIn: '10d'    // сколько будет действовать ключ (10 дней)
-		} 
+		process.env.JWT_SECRET,
+		{
+			expiresIn: '10d'
+		}
 	)

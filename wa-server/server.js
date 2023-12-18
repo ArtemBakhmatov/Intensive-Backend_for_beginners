@@ -1,54 +1,40 @@
-import dotenv from 'dotenv';
-import morgan from 'morgan';
-import 'colors';
-import express from "express";
-import authRoutes from './app/auth/auth.routes.js';
-import userRoutes from './app/user/user.routes.js';
-import { prisma } from './app/prisma.js';
-import { errorHandler, notFound } from './app/middleware/error.middleware.js';
+import 'colors'
+import dotenv from 'dotenv'
+import express from 'express'
+import morgan from 'morgan'
 
-dotenv.config(); // инициализируем файл .env
+import { errorHandler, notFound } from './app/middleware/error.middleware.js'
 
-/* 
-    TODO: 
-        [] - Async error handling for method
-        [] - App.use notFound, errorHandler
-        [] - 
-*/
+import authRoutes from './app/auth/auth.routes.js'
+import { prisma } from './app/prisma.js'
+import userRoutes from './app/user/user.routes.js'
 
-const app = express();
+dotenv.config()
+
+const app = express()
 
 async function main() {
-    if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
-    // morgan -> позволяет делать логирование внутри консоли (какие запросы ушли и какие пришли)
-    // morgan -> будет логировать наши запросы
+	if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
-    app.use(express.json); // в формате json
-    app.use('/api/auth', authRoutes);
-    app.use('/api/users', userRoutes);
+	app.use(express.json())
+	app.use('/api/auth', authRoutes)
+	app.use('/api/users', userRoutes)
 
-    app.use(notFound);
-    app.use(errorHandler);
+	app.use(notFound)
+	app.use(errorHandler)
 
-    const PORT = 5000;
+	const PORT = process.env.PORT || 5000
 
-    app.listen(
-        PORT, 
-        console.log(
-            `Server running in ${ process.env.NODE_ENV } mode on port ${ PORT }`.blue
-                .bold
-        )
-    )
+	app.listen(
+		PORT,
+		console.log(
+			`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.blue
+				.bold
+		)
+	)
 }
 
-/* 
-    use() -> используется для создания промежуточных обработчиков - Middleware.
-    Middleware -> функция промежуточной обработки, используется для выполнения каких-либо 
-    действий на основе данных объекта запроса и ответа и передает обработку следующей функции. 
-    listen() ->  используется для привязки и прослушивания соединений на указанном хосте и порту. 
-*/
-
-main() // отключение БД
+main()
 	.then(async () => {
 		await prisma.$disconnect()
 	})

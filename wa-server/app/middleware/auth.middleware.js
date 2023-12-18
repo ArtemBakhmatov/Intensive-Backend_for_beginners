@@ -8,7 +8,7 @@ export const protect = asyncHandler(async (req, res, next) => {
 	let token
 
 	if (req.headers.authorization?.startsWith('Bearer')) {
-		token = req.headers.authorization.split(' ')[1] // тут забираем токен без Bearer, он 0-й массив
+		token = req.headers.authorization.split(' ')[1]
 
 		const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
@@ -21,7 +21,7 @@ export const protect = asyncHandler(async (req, res, next) => {
 
 		if (userFound) {
 			req.user = userFound
-			next() // продолжает работу приложения
+			next()
 		} else {
 			res.status(401)
 			throw new Error('Not authorized, token failed')
