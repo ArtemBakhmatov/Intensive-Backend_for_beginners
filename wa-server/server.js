@@ -4,6 +4,7 @@ import 'colors';
 import express from "express";
 import authRoutes from './app/auth/auth.routes.js';
 import { prisma } from './app/prisma.js';
+import { errorHandler, notFound } from './app/middleware/error.middleware.js';
 
 dotenv.config(); // инициализируем файл .env
 
@@ -23,6 +24,9 @@ async function main() {
 
     app.use(express.json); // в формате json
     app.use('/api/auth', authRoutes);
+
+    app.use(notFound);
+    app.use(errorHandler);
 
     const PORT = 5000;
 
