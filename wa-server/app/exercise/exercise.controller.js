@@ -67,7 +67,7 @@ export const deleteExercise = asyncHandler(async (req, res) => {
 // @access  Private
 export const getExercises = asyncHandler(async (req, res) => {
 	const exercises = await prisma.exercise.findMany({
-		orderBy: { // тут сортировка по обновлению
+		orderBy: {
 			createdAt: 'desc'
 		}
 	})
