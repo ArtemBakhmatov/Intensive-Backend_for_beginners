@@ -1,12 +1,14 @@
 //import { useState } from 'react'
 
+import Layout from "./components/layout/Layout"
+
 
 function App() {
 
   return (
-    <>
-      <p>Привет Мир!</p>  
-    </>
+    <Layout>
+      <p>Привет Мир!</p>
+    </Layout>
         
   )
 }
